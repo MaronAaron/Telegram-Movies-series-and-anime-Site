@@ -6,12 +6,12 @@ from telethon import TelegramClient, events
 
 # 1. SETUP YOUR CREDENTIALS
 # Get API_ID and API_HASH from https://my.telegram.org
-API_ID = 1234567  # Replace with your actual API ID (integer)
-API_HASH = 'your_api_hash_here'  # Replace with your actual API Hash (string)
+API_ID = 32798857 # Replace with your actual API ID (integer)
+API_HASH = 'df61f3f6569ad955338ab767c9a6b4c0'  # Replace with your actual API Hash (string)
 CHANNEL_USERNAME = 'Moviesseriesandanime'
 
 # Get a free API key from https://www.themoviedb.org
-TMDB_API_KEY = 'your_tmdb_api_key_here'
+TMDB_API_KEY = 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6'
 
 JSON_FILE = 'movies.json'
 
