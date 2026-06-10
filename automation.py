@@ -3,15 +3,31 @@ import os
 import re
 import threading
 import requests
-from flask import Flask
+from flask import Flask, send_from_directory
 from telethon import TelegramClient, events
 
-# --- 1. FLASK WEB SERVER SETUP (FOR RENDER FREE TIER) ---
+# --- 1. FLASK WEB SERVER SETUP (SERVES YOUR WEBSITE & DATA) ---
 app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "Movie Sync Hub Engine is Running Alive!", 200
+    """Reads your index.html and serves it directly as the website main page."""
+    try:
+        with open('index.html', 'r', encoding='utf-8') as f:
+            return f.read(), 200, {'Content-Type': 'text/html'}
+    except Exception as e:
+        return f"Backend engine is live, but index.html was not found in the root folder: {e}", 500
+
+@app.route('/movies.json')
+def get_movies():
+    """Provides the movie array directly to your frontend script."""
+    if os.path.exists(JSON_FILE):
+        try:
+            with open(JSON_FILE, 'r', encoding='utf-8') as f:
+                return f.read(), 200, {'Content-Type': 'application/json'}
+        except Exception:
+            return "[]", 200, {'Content-Type': 'application/json'}
+    return "[]", 200, {'Content-Type': 'application/json'}
 
 # --- 2. YOUR TELEGRAM CONFIGURATION ---
 API_ID = 32798857
@@ -79,16 +95,15 @@ async def my_event_handler(event):
         
         data = []
         if os.path.exists(JSON_FILE):
-            with open(JSON_FILE, 'r') as f:
+            with open(JSON_FILE, 'r', encoding='utf-8') as f:
                 try: data = json.load(f)
                 except json.JSONDecodeError: data = []
                     
         data.insert(0, new_entry)
-        with open(JSON_FILE, 'w') as f:
+        with open(JSON_FILE, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=4)
         print(f"✅ Successfully added {clean_name} to the website database!")
 
-# Run Telegram Client in a background thread so it doesn't block the web server
 def run_telegram():
     client.start()
     client.run_until_disconnected()
@@ -96,6 +111,5 @@ def run_telegram():
 if __name__ == '__main__':
     t = threading.Thread(target=run_telegram)
     t.start()
-    # Port configuration for Render deployment
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
