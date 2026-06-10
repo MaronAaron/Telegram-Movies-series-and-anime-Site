@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Movies and Series - Premium Streaming Hub</title>
+    <!-- Tailwind CSS CDN for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for sleek icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0d0f12;
+        }
+        .glass-card {
+            background: rgba(25, 28, 36, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .movie-card:hover .poster-overlay {
+            opacity: 1;
+        }
+        .movie-card:hover img {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="text-gray-100 min-h-screen flex flex-col justify-between selection:bg-red-500 selection:text-white">
+
+    <!-- Top Navigation -->
+    <nav class="glass-card sticky top-0 z-50 px-6 py-4 flex justify-between items-center border-b border-gray-800">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-full bg-red-600 flex items-center justify-center shadow-lg shadow-red-600/30">
+                <i class="fas fa-play text-white text-sm"></i>
+            </div>
+            <span class="text-xl font-bold tracking-wider bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+                ANIME MOVIES & SERIES
+            </span>
+        </div>
+        <a href="https://t.me/+muYdOe_gPkxmODI0" target="_blank" class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold px-5 py-2 rounded-full transition-all duration-300 flex items-center space-x-2 transform hover:scale-105 shadow-lg shadow-blue-500/20">
+            <i class="fab fa-telegram-plane"></i>
+            <span>Join Channel (137+)</span>
+        </a>
+    </nav>
+
+    <!-- Hero Announcement & Notice Section -->
+    <header class="max-w-7xl mx-auto w-full px-6 pt-8">
+        <div class="bg-gradient-to-r from-amber-500/10 to-orange-500/10 border border-amber-500/30 rounded-2xl p-5 flex items-start space-x-4 shadow-xl">
+            <div class="bg-amber-500/20 p-3 rounded-xl text-amber-400">
+                <i class="fas fa-info-circle text-xl"></i>
+            </div>
+            <div>
+                <h4 class="font-semibold text-amber-300 mb-1">Playback Notice</h4>
+                <p class="text-sm text-gray-300 leading-relaxed">
+                    Should your video player be experiencing difficulties, simply download <span class="text-amber-400 font-semibold">VLC Player</span> to ensure your viewing experience continues uninterrupted.
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Hub -->
+    <main class="max-w-7xl mx-auto w-full px-6 py-8 flex-grow">
+        
+        <!-- Controls: Tabs & Search Bar -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
+            <!-- Functional Navigation Tabs -->
+            <div class="flex space-x-2 bg-gray-900/60 p-1.5 rounded-xl border border-gray-800 self-start">
+                <button onclick="filterCategory('all')" id="tab-all" class="tab-btn px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 bg-red-600 text-white shadow-lg shadow-red-600/20">
+                    All Media
+                </button>
+                <button onclick="filterCategory('movies')" id="tab-movies" class="tab-btn px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 text-gray-400 hover:text-white">
+                    Movies
+                </button>
+                <button onclick="filterCategory('series')" id="tab-series" class="tab-btn px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 text-gray-400 hover:text-white">
+                    Series
+                </button>
+                <button onclick="filterCategory('anime')" id="tab-anime" class="tab-btn px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 text-gray-400 hover:text-white">
+                    Anime
+                </button>
+            </div>
+
+            <!-- Modern Search input -->
+            <div class="relative w-full md:w-80">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-gray-500">
+                    <i class="fas fa-search"></i>
+                </span>
+                <input type="text" id="searchInput" onkeyup="searchMedia()" class="w-full bg-gray-950 text-gray-200 placeholder-gray-500 text-sm rounded-xl pl-10 pr-4 py-3 border border-gray-800 focus:outline-none focus:border-red-500 focus:ring-1 focus:ring-red-500 transition-all" placeholder="Search title, genre, year...">
+            </div>
+        </div>
+
+        <!-- Dynamic Movies/Series Responsive Grid -->
+        <div id="mediaGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            <!-- JavaScript will inject cards here automatically -->
+        </div>
+
+        <!-- Empty State Handling -->
+        <div id="noResults" class="hidden text-center py-20">
+            <i class="fas fa-film text-5xl text-gray-700 mb-4"></i>
+            <p class="text-gray-400 text-lg">No results match your search or filter.</p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800 bg-gray-950/50 py-6 text-center text-xs text-gray-500">
+        <p>&copy; 2026 Anime Movies and Series Hub. Powered by Telegram Automation.</p>
+    </footer>
+
+    <!-- Frontend Media Engine Script -->
+    <script>
+        // Mock Database replicating your channel feed contents dynamically
+        const mediaData = [
+            {
+                title: "Star Wars: The Mandalorian and Grogu",
+                category: "movies",
+                year: "2026",
+                quality: "1080p WEB-HD",
+                image: "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=400", // Placeholder gradient image
+                tgLink: "https://t.me/+muYdOe_gPkxmODI0" // This links to the specific message index once automated
+            },
+            {
+                title: "Lab Rats (Season 4 - Episode 22)",
+                category: "series",
+                year: "2015",
+                quality: "720p WEB-HD",
+                image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=400",
+                tgLink: "https://t.me/+muYdOe_gPkxmODI0"
+            },
+            {
+                title: "Demon Slayer: Infinity Castle",
+                category: "anime",
+                year: "2025",
+                quality: "Dual Audio 1080p",
+                image: "https://images.unsplash.com/photo-1534447677768-be436bb09401?q=80&w=400",
+                tgLink: "https://t.me/+muYdOe_gPkxmODI0"
+            }
+        ];
+
+        let currentFilter = 'all';
+
+        function displayCards(data) {
+            const grid = document.getElementById('mediaGrid');
+            const noResults = document.getElementById('noResults');
+            grid.innerHTML = '';
+
+            if(data.length === 0) {
+                noResults.classList.remove('hidden');
+                return;
+            } else {
+                noResults.classList.add('hidden');
+            }
+
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = "movie-card glass-card rounded-2xl overflow-hidden shadow-xl cursor-pointer group relative flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-red-600/10";
+                
+                // Clicking takes the user directly to the specified Telegram Message/Group item
+                card.onclick = () => window.open(item.tgLink, '_blank');
+
+                card.innerHTML = `
+                    <div class="relative aspect-[2/3] w-full overflow-hidden bg-gray-900">
+                        <img src="${item.image}" alt="${item.title}" class="w-full h-full object-cover transition-transform duration-500 ease-out">
+                        <div class="poster-overlay absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/40 to-transparent opacity-90 transition-opacity duration-300 flex flex-col justify-end p-4">
+                            <span class="absolute top-3 right-3 bg-red-600 text-[10px] uppercase font-bold tracking-wider px-2 py-1 rounded-md text-white shadow">
+                                ${item.quality}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="p-4 flex-grow flex flex-col justify-between">
+                        <h3 class="font-semibold text-sm line-clamp-2 group-hover:text-red-400 transition-colors duration-200 mb-1">${item.title}</h3>
+                        <div class="flex items-center justify-between text-[11px] text-gray-400 font-medium pt-2 border-t border-gray-800/60">
+                            <span>${item.category.toUpperCase()}</span>
+                            <span class="bg-gray-800 px-2 py-0.5 rounded text-gray-300">${item.year}</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function filterCategory(category) {
+            currentFilter = category;
+            
+            // Adjust styles on active tab
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-red-600', 'text-white', 'shadow-lg', 'shadow-red-600/20');
+                btn.classList.add('text-gray-400', 'hover:text-white');
+            });
+            const activeTab = document.getElementById(`tab-${category}`);
+            activeTab.classList.remove('text-gray-400', 'hover:text-white');
+            activeTab.classList.add('bg-red-600', 'text-white', 'shadow-lg', 'shadow-red-600/20');
+
+            applyFilterAndSearch();
+        }
+
+        function searchMedia() {
+            applyFilterAndSearch();
+        }
+
+        function applyFilterAndSearch() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            let filtered = mediaData;
+
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(item => item.category === currentFilter);
+            }
+
+            if (query.trim() !== '') {
+                filtered = filtered.filter(item => 
+                    item.title.toLowerCase().includes(query) || 
+                    item.year.includes(query)
+                );
+            }
+
+            displayCards(filtered);
+        }
+
+        // Initialize App
+        displayCards(mediaData);
+    </script>
+</body>
+</html>
