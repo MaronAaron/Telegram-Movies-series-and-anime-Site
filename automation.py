@@ -5,13 +5,10 @@ import requests
 from telethon import TelegramClient, events
 
 # 1. SETUP YOUR CREDENTIALS
-# Get API_ID and API_HASH from https://my.telegram.org
-API_ID = 32798857 # Replace with your actual API ID (integer)
-API_HASH = 'df61f3f6569ad955338ab767c9a6b4c0'  # Replace with your actual API Hash (string)
+API_ID = 32798857
+API_HASH = 'df61f3f6569ad955338ab767c9a6b4c0'
 CHANNEL_USERNAME = 'Moviesseriesandanime'
-
-# Get a free API key from https://www.themoviedb.org
-TMDB_API_KEY = 'a1b2c3d4e5f6g7h8i9j0k1l2m3n4o5p6'
+TMDB_API_KEY = '9c4809193b9f263678368bb602af9433'
 
 JSON_FILE = 'movies.json'
 
@@ -73,7 +70,7 @@ async def my_event_handler(event):
         # Clean title and guess if it's a Movie, Series, or Anime
         clean_name, is_series = clean_title(filename)
         category = "series" if is_series else "movies"
-        if "anime" in filename.lower() or "naruto" in filename.lower(): # Basic rule-based tagger
+        if "anime" in filename.lower() or "naruto" in filename.lower(): 
             category = "anime"
             
         # Extract quality strings
@@ -112,6 +109,6 @@ async def my_event_handler(event):
             
         print(f"✅ Successfully added {clean_name} to the website database!")
 
-print("⚡ Movie Sync Engine is running... Post a movie to your channel to test.")
+print("⚡ Movie Sync Engine is running... Post a movie file to your channel to test.")
 client.start()
 client.run_until_disconnected()
